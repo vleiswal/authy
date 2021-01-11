@@ -10,7 +10,6 @@ import 'package:authy/src/widgets/textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:loading_overlay/loading_overlay.dart';
-import 'package:provider/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class SigninPhoneScreen extends StatefulWidget {
@@ -31,7 +30,7 @@ class _SigninPhoneScreenState extends State<SigninPhoneScreen> {
 
   @override
   void initState() {
-    final authBloc = Provider.of<AuthBloc>(context,listen: false);
+    final authBloc = Provider.of<AuthBloc>(context, listen: false);
     authBloc.changePhone(null);
     authBloc.changeShowAutomatedConfirmationDialog(false);
 
@@ -49,25 +48,26 @@ class _SigninPhoneScreenState extends State<SigninPhoneScreen> {
       }
     });
 
-    _verificationCodeSubscription = authBloc.showConfirmationDialog.listen((event) {
+    _verificationCodeSubscription =
+        authBloc.showConfirmationDialog.listen((event) {
       if (event == true) {
         AuthyAlert.showCodeConfirmationDialog(context, authBloc);
       }
     });
 
     _userSubscription = authBloc.user.listen((user) {
-      if (user != null)
-        if (user.verified == true) {
-          Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => HomeScreen()));
-        } else {
-          Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => VerifyScreen(user.email)));
-        }
+      if (user != null) if (user.verified == true) {
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => HomeScreen()));
+      } else {
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => VerifyScreen(user.email)));
+      }
     });
 
     super.initState();
   }
+
   @override
   void dispose() {
     _verificationCodeSubscription.cancel();
@@ -112,16 +112,14 @@ class _SigninPhoneScreenState extends State<SigninPhoneScreen> {
                           errorText: snapshot.error,
                         );
                       }),
-
                 ],
               ),
             ),
             StreamBuilder<String>(
                 stream: authBloc.phone,
                 builder: (context, snapshot) {
-
                   return AuthyButton(
-                    text: (widget.mode == Mode.Signin) ? 'Sign in': 'Sign up',
+                    text: (widget.mode == Mode.Signin) ? 'Sign in' : 'Sign up',
                     enabled: (snapshot.data != null) ? true : false,
                     onTap: authBloc.signupPhone,
                   );
@@ -133,8 +131,4 @@ class _SigninPhoneScreenState extends State<SigninPhoneScreen> {
   }
 }
 
-enum Mode{
-  Signin,
-  Signup
-}
-
+enum Mode { Signin, Signup }
