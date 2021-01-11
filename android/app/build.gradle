@@ -38,7 +38,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.julow.authy"
+        applicationId "com.vleis.andy_authy"
         minSdkVersion 21
         targetSdkVersion 29
         versionCode flutterVersionCode.toInteger()
